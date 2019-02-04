@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserGame(SS)", "BrowserGame(SS)\BrowserGame(SS).csproj", "{12175B54-B631-42F2-B479-79E30163E52C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12175B54-B631-42F2-B479-79E30163E52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12175B54-B631-42F2-B479-79E30163E52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12175B54-B631-42F2-B479-79E30163E52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12175B54-B631-42F2-B479-79E30163E52C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7745CBD0-D5B1-48ED-AB3B-051EEB6FB38F}
+	EndGlobalSection
+EndGlobal
