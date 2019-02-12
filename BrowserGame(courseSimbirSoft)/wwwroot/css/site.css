@@ -54,3 +54,18 @@ body {
   height: 60px;
   line-height: 60px; /* Vertically center the text there */
 }
+.form-control{
+    color: #061af5;
+    font-weight:bold;  
+}
+.field-validation-error{
+    color: #6699CC;
+    font-family:'Bell MT';
+    font-size:large;  
+}
+input.input-validation-error{
+    border:3px solid #626262;
+    background-color:#d4d9ff;
+}
+
+

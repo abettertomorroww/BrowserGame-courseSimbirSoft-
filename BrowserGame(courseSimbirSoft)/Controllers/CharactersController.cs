@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BrowserGame_courseSimbirSoft_.Data;
 using BrowserGame_courseSimbirSoft_.Models;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
+    
     public class CharactersController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        
         public CharactersController(ApplicationDbContext context)
         {
             _context = context;
@@ -76,22 +78,27 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Character character)
         {
-            try
+            if(ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                try
                 {
-                    _context.Add(character);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(character);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.
+                    ModelState.AddModelError("", "Невозможно сохранить изменения. " +
+                                       "Повторите попытку, и если проблема не устранена, " +
+                "обратитесь к системному администратору.");
+                }
+                
             }
-            catch (DbUpdateException /* ex */)
-            {
-                //Log the error (uncomment ex variable name and write a log.
-                ModelState.AddModelError("", "Невозможно сохранить изменения. " +
-                                   "Повторите попытку, и если проблема не устранена, " +
-            "обратитесь к системному администратору.");
-            }
+            
             return View(character);
         }
         public async Task<IActionResult> Transform(int? id)
@@ -113,7 +120,8 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TransformPost(int? id)
         {
-            if (id == null)
+            
+                if (id == null)
             {
                 return NotFound();
             }
