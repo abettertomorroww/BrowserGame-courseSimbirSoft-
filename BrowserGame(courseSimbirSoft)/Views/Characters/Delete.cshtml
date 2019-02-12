@@ -1,0 +1,44 @@
+﻿
+@model BrowserGame_courseSimbirSoft_.Models.Character
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+<p class="text-danger">@ViewData["ErrorMessage"]</p>
+<h3>Are you sure?</h3>
+<div>
+    <h4>Characters</h4>
+    <hr />
+    <dl class="row">
+        <dt class="cos-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="cos-sm-2">
+            @Html.DisplayNameFor(model => model.Race)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Race)
+        </dd>
+        <dt class="cos-sm-2">
+            @Html.DisplayNameFor(model => model.Ability)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ability)
+        </dd>
+        <dt class="cos-sm-2">
+            @Html.DisplayNameFor(model => model.Class)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Class)
+        </dd>
+    </dl>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index">Backward</a>
+    </form>
+</div>

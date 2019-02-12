@@ -1,0 +1,41 @@
+﻿
+@model BrowserGame_courseSimbirSoft_.Models.Character
+@{
+    ViewData["Title"] = "Information";
+}
+
+<h1>Information</h1>
+<div>
+    <h4>Character</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Race)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Race)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ability)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ability)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Class)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Class)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Transform" asp-route-id="@Model.Id">Transform</a>
+    <a asp-action="Index">Backward</a>
+</div>
