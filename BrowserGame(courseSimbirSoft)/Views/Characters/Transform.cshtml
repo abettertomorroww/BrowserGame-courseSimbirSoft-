@@ -7,37 +7,55 @@
 <h1>Transform</h1>
 <h4>Character</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Transform">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label">Name</label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Name) })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group">
-                <label asp-for="Race" class="control-label">Race</label>
-                <input asp-for="Race" class="form-control" />
-                <span asp-validation-for="Race" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Race, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Race, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Race) })
+                @Html.ValidationMessageFor(model => model.Race, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group">
-                <label asp-for="Ability" class="control-label">Ability</label>
-                <input asp-for="Ability" class="form-control" />
-                <span asp-validation-for="Ability" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ability, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ability, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Ability) })
+                @Html.ValidationMessageFor(model => model.Ability, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group">
-                <label asp-for="Class" class="control-label">Class</label>
-                <input asp-for="Class" class="form-control" />
-                <span asp-validation-for="Class" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Class, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Class, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Class) })
+                @Html.ValidationMessageFor(model => model.Class, "", new { @class = "text-danger" })
             </div>
-        </form>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Transform" class="btn btn-default" />
+            </div>
+        </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Backward</a>
-</div>
+
+<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Backward" class="btn btn-default" />
+            </div>
+        </div>
+}
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

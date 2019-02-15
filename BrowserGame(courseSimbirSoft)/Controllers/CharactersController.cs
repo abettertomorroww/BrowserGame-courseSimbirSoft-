@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame_courseSimbirSoft_.Data;
 using BrowserGame_courseSimbirSoft_.Models;
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
-    
+    [Authorize]
     public class CharactersController : Controller
     {
         private readonly ApplicationDbContext _context;

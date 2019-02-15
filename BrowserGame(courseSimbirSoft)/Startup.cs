@@ -13,6 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using BrowserGame_courseSimbirSoft_.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using BrowserGame_courseSimbirSoft_.Models.Logger;
+
 
 namespace BrowserGame_courseSimbirSoft_
 {
@@ -25,10 +29,10 @@ namespace BrowserGame_courseSimbirSoft_
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
-            //Включение аутентификации Google, facebook с помощью OWIN
+
             services.AddAuthentication()
                 .AddGoogle(googleOptions =>
                 {
@@ -40,7 +44,7 @@ namespace BrowserGame_courseSimbirSoft_
                     facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                     facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
                 });
-            //добавил фильтр для Включение SSL/TLS
+
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new RequireHttpsAttribute());
@@ -67,8 +71,9 @@ namespace BrowserGame_courseSimbirSoft_
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -80,20 +85,26 @@ namespace BrowserGame_courseSimbirSoft_
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            //loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "FileLogger.txt"));
+            //var logger = loggerFactory.CreateLogger("FileLogger");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+           
+            //app.Run(async (context) =>
+            //{
+            //    logger.LogInformation("Processing request {0}", context.Request.Path);
+            //    await context.Response.WriteAsync("Hello World!");
+            //});
 
         }
+
     }
 }

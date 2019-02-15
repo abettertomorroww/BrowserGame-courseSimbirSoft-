@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using BrowserGame_courseSimbirSoft_.Models.Logger;
 
 namespace BrowserGame_courseSimbirSoft_
 {
@@ -42,5 +43,7 @@ namespace BrowserGame_courseSimbirSoft_
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
+                //.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
+                
     }
 }
