@@ -34,16 +34,16 @@ namespace BrowserGame_courseSimbirSoft_
         {
 
             services.AddAuthentication()
-                .AddGoogle(googleOptions =>
-                {
-                    googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-                })
-                .AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                });
+                                   .AddGoogle(googleOptions =>
+                                   {
+                                       googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                                       googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                                   })
+                                   .AddFacebook(facebookOptions =>
+                                   {
+                                       facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                                       facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                                   });
 
             services.Configure<MvcOptions>(options =>
             {
@@ -60,6 +60,8 @@ namespace BrowserGame_courseSimbirSoft_
             //    options.UseNpgsql(
             //        Configuration.GetConnectionString("DefaultConnection")));
             //
+            
+            
             services.AddMvc();
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
             opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
@@ -85,8 +87,8 @@ namespace BrowserGame_courseSimbirSoft_
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "FileLogger.txt"));
-            //var logger = loggerFactory.CreateLogger("FileLogger");
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs\\FileLogger.txt"));
+            var logger = loggerFactory.CreateLogger("FileLogger");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -97,13 +99,6 @@ namespace BrowserGame_courseSimbirSoft_
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-           
-            //app.Run(async (context) =>
-            //{
-            //    logger.LogInformation("Processing request {0}", context.Request.Path);
-            //    await context.Response.WriteAsync("Hello World!");
-            //});
-
         }
 
     }

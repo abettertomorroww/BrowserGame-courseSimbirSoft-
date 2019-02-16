@@ -42,8 +42,8 @@ namespace BrowserGame_courseSimbirSoft_
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
-                //.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
                 
     }
 }
