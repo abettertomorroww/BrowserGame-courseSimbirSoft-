@@ -15,6 +15,11 @@ namespace BrowserGame_courseSimbirSoft_.Models
         private object _lock = new object();
         public FileLogger(string path)
         {
+            var directoryName = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
             filePath = path;
         }
         public IDisposable BeginScope<TState>(TState state)
@@ -32,9 +37,11 @@ namespace BrowserGame_courseSimbirSoft_.Models
         {
             if (formatter != null)
             {
+                var message = logLevel.ToString() + " " + state.ToString() + " " + exception?.Message + Environment.NewLine;
                 lock (_lock)
                 {
                     File.AppendAllText(filePath, formatter(state, exception) + Environment.NewLine);
+                    File.AppendAllText(filePath, message);
                 }
             }
         }

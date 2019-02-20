@@ -29,6 +29,7 @@ namespace BrowserGame_courseSimbirSoft_
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate();
                     InitializerDb.Initialize(context);
+
                 }
                 catch (Exception ex)
                 {
@@ -42,8 +43,8 @@ namespace BrowserGame_courseSimbirSoft_
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
-                //.ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
                 
     }
 }

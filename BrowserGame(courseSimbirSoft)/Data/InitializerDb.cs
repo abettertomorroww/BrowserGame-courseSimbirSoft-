@@ -3,12 +3,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace BrowserGame_courseSimbirSoft_.Data
 {
     public class InitializerDb
     {
+        public static async Task InitializeAsync(ApplicationDbContext context, IServiceProvider serviceProvider)
+        {
+            //context.Database.EnsureCreated();
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            string[] roleNames = { "Admin", "User" };
+            IdentityResult roleResult;
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+            IdentityUser user = await UserManager.FindByEmailAsync("alex.kkk222@yandex.ru");
+            var User = new IdentityUser();
+            await UserManager.AddToRoleAsync(user, "Admin");
+
+        }
         public static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
@@ -30,5 +52,6 @@ namespace BrowserGame_courseSimbirSoft_.Data
             }
             context.SaveChanges();
         }
+       
     }
 }

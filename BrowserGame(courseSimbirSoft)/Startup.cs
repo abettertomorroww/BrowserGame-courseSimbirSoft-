@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using BrowserGame_courseSimbirSoft_.Models.Logger;
+using BrowserGame_courseSimbirSoft_.Views.Error;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 namespace BrowserGame_courseSimbirSoft_
@@ -32,7 +34,12 @@ namespace BrowserGame_courseSimbirSoft_
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
             services.AddAuthentication()
                 .AddGoogle(googleOptions =>
                 {
@@ -60,13 +67,12 @@ namespace BrowserGame_courseSimbirSoft_
             //    options.UseNpgsql(
             //        Configuration.GetConnectionString("DefaultConnection")));
             //
-            services.AddMvc();
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDefaultIdentity<IdentityUser>()
-          .AddDefaultUI(UIFramework.Bootstrap4)
-          .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -85,8 +91,9 @@ namespace BrowserGame_courseSimbirSoft_
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "FileLogger.txt"));
-            //var logger = loggerFactory.CreateLogger("FileLogger");
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs\\FileLogger.txt"));
+            var logger = loggerFactory.CreateLogger("FileLogger");
+            app.UseStatusCodePagesWithRedirects("Home/Error/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -97,13 +104,6 @@ namespace BrowserGame_courseSimbirSoft_
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-           
-            //app.Run(async (context) =>
-            //{
-            //    logger.LogInformation("Processing request {0}", context.Request.Path);
-            //    await context.Response.WriteAsync("Hello World!");
-            //});
-
         }
 
     }

@@ -92,9 +92,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
                 catch (DbUpdateException /* ex */)
                 {
                     //Log the error (uncomment ex variable name and write a log.
-                    ModelState.AddModelError("", "Невозможно сохранить изменения. " +
-                                       "Повторите попытку, и если проблема не устранена, " +
-                "обратитесь к системному администратору.");
+                    ModelState.AddModelError("", "Unable to save changes");
                 }
                 
             }
@@ -139,9 +137,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
                 catch (DbUpdateException /* ex */)
                 {
                     //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Невозможно сохранить изменения. " +
-                        "Повторите попытку, и если проблема не устранена, " +
- "обратитесь к системному администратору.");
+                    ModelState.AddModelError("", "Unable to save changes ");
                 }
             }
             return View(studentToUpdate);
@@ -165,8 +161,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewData["ErrorMessage"] =
-                    "Ошибка удаления. Попробуйте еще раз, и если проблема не устранена " +
- "обратитесь к системному администратору.";
+                    "Uninstall failed";
             }
 
             return View(student);
