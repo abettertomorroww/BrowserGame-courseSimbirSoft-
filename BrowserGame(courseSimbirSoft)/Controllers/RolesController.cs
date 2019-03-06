@@ -11,7 +11,7 @@ using BrowserGame_courseSimbirSoft_.Models;
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
-    [Authorize] // пока не доделал роль админа
+    //[Authorize(Roles ="Admin")] 
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;

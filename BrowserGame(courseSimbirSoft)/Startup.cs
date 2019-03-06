@@ -18,7 +18,7 @@ using System.IO;
 using BrowserGame_courseSimbirSoft_.Models.Logger;
 using BrowserGame_courseSimbirSoft_.Views.Error;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace BrowserGame_courseSimbirSoft_
 {
@@ -79,7 +79,8 @@ namespace BrowserGame_courseSimbirSoft_
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-
+            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "log//logger_" + DateTime.Today.ToShortDateString() + ".txt"));
+            var logger = loggerFactory.CreateLogger("FileLogger");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -91,11 +92,20 @@ namespace BrowserGame_courseSimbirSoft_
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logs\\FileLogger.txt"));
-            var logger = loggerFactory.CreateLogger("FileLogger");
+
+            app.UseExceptionHandler("/Error");
             app.UseStatusCodePagesWithRedirects("Home/Error/{0}");
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            app.UseFileServer();
+            StaticFileOptions option = new StaticFileOptions();
+            FileExtensionContentTypeProvider contentTypeProvider = (FileExtensionContentTypeProvider)option.ContentTypeProvider ??
+            new FileExtensionContentTypeProvider();
+            contentTypeProvider.Mappings.Add(".unityweb", "application/octet-stream");
+            option.ContentTypeProvider = contentTypeProvider;
+            app.UseStaticFiles(option);
+
+            // app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseMvc(routes =>
@@ -104,6 +114,10 @@ namespace BrowserGame_courseSimbirSoft_
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
+           
+
         }
 
     }

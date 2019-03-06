@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BrowserGame_courseSimbirSoft_.Models.Logger;
 
+
 namespace BrowserGame_courseSimbirSoft_
 {
     public class Program
@@ -27,8 +28,9 @@ namespace BrowserGame_courseSimbirSoft_
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
+                    InitializerDb.InitializeAsync(context, services).Wait();
                     context.Database.Migrate();
-                    InitializerDb.Initialize(context);
+                    
 
                 }
                 catch (Exception ex)
@@ -40,11 +42,13 @@ namespace BrowserGame_courseSimbirSoft_
 
             host.Run();
         }
-
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
-                
+             
+        
+
+
     }
 }

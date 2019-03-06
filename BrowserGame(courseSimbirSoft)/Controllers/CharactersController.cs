@@ -27,14 +27,14 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
-            ViewData["ClassSortParm"] = sortOrder == "Class" ? "date_desc" : "Class";
+            ViewData["EmailSortParm"] = sortOrder == "Email" ? "date_desc" : "Email";
             ViewData["CurrentFilter"] = searchString;
 
             var characters = from s in _context.Characters
                              select s;
             if (!string.IsNullOrEmpty(searchString))
             {
-                characters = characters.Where(s => s.Name.Contains(searchString) || s.Race.Contains(searchString));
+                characters = characters.Where(s => s.Name.Contains(searchString) || s.Win.Contains(searchString));
 
             }
             switch (sortOrder)
@@ -42,11 +42,11 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
                 case "name":
                     characters = characters.OrderByDescending(s => s.Name);
                 break;
-                case "Class":
-                    characters = characters.OrderBy(s => s.Class);
+                case "Email":
+                    characters = characters.OrderBy(s => s.Email);
                     break;
                 case "date_desc":
-                    characters = characters.OrderByDescending(s => s.Class);
+                    characters = characters.OrderByDescending(s => s.Email);
                     break;
                 default:
                     characters = characters.OrderBy(s => s.Name);
@@ -99,6 +99,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             
             return View(character);
         }
+        [Authorize (Roles = "Admin")]
         public async Task<IActionResult> Transform(int? id)
         {
             if (id == null)
@@ -113,7 +114,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             }
             return View(character);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Transform")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TransformPost(int? id)
@@ -127,7 +128,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             if (await TryUpdateModelAsync<Character>(
                 studentToUpdate,
                 "",
-                s => s.Name, s => s.Race, s => s.Ability, s => s.Class))
+                s => s.Name, s => s.Email, s => s.Win, s => s.Lose))
             {
                 try
                 {
@@ -142,7 +143,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             }
             return View(studentToUpdate);
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -167,11 +168,12 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             return View(student);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            
             var student = await _context.Characters
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id == id);

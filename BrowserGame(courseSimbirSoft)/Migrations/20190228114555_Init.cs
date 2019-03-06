@@ -53,10 +53,10 @@ namespace BrowserGame_courseSimbirSoft_.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Race = table.Column<string>(nullable: true),
-                    Ability = table.Column<string>(nullable: true),
-                    Class = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 20, nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Win = table.Column<string>(nullable: false),
+                    Lose = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

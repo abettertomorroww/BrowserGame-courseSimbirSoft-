@@ -17,9 +17,9 @@ namespace BrowserGame_courseSimbirSoft_.Models.Logger
         {
             return new FileLogger(path);
         }
+
         public void Dispose()
         {
-
         }
     }
 }

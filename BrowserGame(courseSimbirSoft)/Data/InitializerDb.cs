@@ -11,6 +11,27 @@ namespace BrowserGame_courseSimbirSoft_.Data
 {
     public class InitializerDb
     {
+       
+        public static void Initialize(ApplicationDbContext context)
+        {
+            context.Database.EnsureCreated();
+
+            if (context.Characters.Any())
+            {
+                return;
+            }
+
+            var userLogin = new Character[]
+            {
+                new Character{Name="ALEX",Email="123@gmail.com",Win="0",Lose="0",Id=1},
+
+            };
+            foreach (Character s in userLogin)
+            {
+                context.Characters.Add(s);
+            }
+            context.SaveChanges();
+        }
         public static async Task InitializeAsync(ApplicationDbContext context, IServiceProvider serviceProvider)
         {
             //context.Database.EnsureCreated();
@@ -31,27 +52,6 @@ namespace BrowserGame_courseSimbirSoft_.Data
             await UserManager.AddToRoleAsync(user, "Admin");
 
         }
-        public static void Initialize(ApplicationDbContext context)
-        {
-            context.Database.EnsureCreated();
 
-            if (context.Characters.Any())
-            {
-                return;
-            }
-
-            var userLogin = new Character[]
-            {
-                new Character{Name="Tresdin",Race="Human",Ability="Vampirism",Class="Warrior",Id=1},
-                new Character{Name="Razzil",Race="Goblin",Ability="Regeneration",Class="Mechanic",Id=2},
-                new Character{Name="Traxex",Race="Elf",Ability="High attack speed",Class="Assassin",Id=3}
-            };
-            foreach (Character s in userLogin)
-            {
-                context.Characters.Add(s);
-            }
-            context.SaveChanges();
-        }
-       
     }
 }

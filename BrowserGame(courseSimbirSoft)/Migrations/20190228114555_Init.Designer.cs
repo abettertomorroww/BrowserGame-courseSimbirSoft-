@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BrowserGame_courseSimbirSoft_.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190212152825_Init")]
+    [Migration("20190228114555_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace BrowserGame_courseSimbirSoft_.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("BrowserGame_courseSimbirSoft_.Models.Character", b =>
@@ -26,13 +26,18 @@ namespace BrowserGame_courseSimbirSoft_.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Ability");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("Class");
+                    b.Property<string>("Lose")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20);
 
-                    b.Property<string>("Race");
+                    b.Property<string>("Win")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

@@ -22,24 +22,24 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Race, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Win, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Race, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Race) })
-                @Html.ValidationMessageFor(model => model.Race, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Win, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Win) })
+                @Html.ValidationMessageFor(model => model.Win, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Ability, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Ability, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Ability) })
-                @Html.ValidationMessageFor(model => model.Ability, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Email) })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.Class, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Lose, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Class, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Class) })
-                @Html.ValidationMessageFor(model => model.Class, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Lose, new { htmlAttributes = new { @class = "form-control" }, placeholder = @Html.DisplayNameFor(m => m.Lose) })
+                @Html.ValidationMessageFor(model => model.Lose, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
