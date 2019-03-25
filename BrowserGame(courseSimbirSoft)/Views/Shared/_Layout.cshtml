@@ -1,8 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<DataLogicLayer.Models.UserData> SignInManager
     <title>@ViewData["Title"] - Browser Game</title>
 
     <environment include="Development">
@@ -38,6 +41,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Characters" asp-action="Index">Characters</a>
                         </li>
+
+                        <li class="nav-item">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+
+                                }
+                            }
+                        </li>
+
                     </ul>
                 </div>
             </div>

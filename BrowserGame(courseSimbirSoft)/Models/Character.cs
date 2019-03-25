@@ -3,33 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using BrowserGame_courseSimbirSoft_.Annotations;
+
 
 namespace BrowserGame_courseSimbirSoft_.Models
 {
+    /// <summary>
+    /// персонаж
+    /// </summary>
     public class Character
     {
+
+        /// <summary>
+        /// id персонажа
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// имя 
+        /// </summary>
         [Required]
-        [StringLength(15, MinimumLength = 2, ErrorMessage = "The length of the string must be between 2 to 15 characters")]
+        [StringLength(20, MinimumLength = 2, ErrorMessage = "The length of the string must be between 2 to 20 characters")]
         [Display(Name = "Name")]
-
         public string Name { get; set; }
-        [Required]
-        [StringLength(15, MinimumLength = 2, ErrorMessage = "The length of the string must be between 2 to 15 characters")]
-        [Display(Name = "Race")]
-        [ValidRace(new string[] { "Elf", "Goblin", "Human", "Undead", "Orc" }, ErrorMessage = "Unacceptable race")]
 
-        public string Race { get; set; }
+        /// <summary>
+        /// почта
+        /// </summary>
         [Required]
-        [StringLength(15, MinimumLength = 2, ErrorMessage = "The length of the string must be between 2 to 15 characters")]
-        [Display(Name = "Ability")]
-        
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Incorrectly")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
 
-        public string Ability { get; set; }
+        /// <summary>
+        /// побед
+        /// </summary>
         [Required]
-        [StringLength(15, MinimumLength = 2, ErrorMessage = "The length of the string must be between 2 to 15 characters")]
-        [Display(Name = "Class")]
-        public string Class { get; set; }
+        [Range(0, 0)]
+        [Display(Name = "Win")]
+        public int Win { get; set; }
+
+        /// <summary>
+        /// поражений
+        /// </summary>
+        [Required]
+        [Range(0, 0)]
+        [Display(Name = "Lose")]
+        public int Lose { get; set; }
+
+        /// <summary>
+        /// пользователь
+        /// </summary>
+        [Display(Name = "User")]
+        public string User { get; set; }
+
     }
 }

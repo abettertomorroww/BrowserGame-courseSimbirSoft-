@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using BrowserGame_courseSimbirSoft_.Data;
+using DataLogicLayer.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using BrowserGame_courseSimbirSoft_.Models;
+
+
+
 
 namespace BrowserGame_courseSimbirSoft_
 {
@@ -27,7 +31,9 @@ namespace BrowserGame_courseSimbirSoft_
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate();
-                    InitializerDb.Initialize(context);
+                    CharacterInitializer.Initialize(context);
+
+
                 }
                 catch (Exception ex)
                 {
@@ -37,10 +43,12 @@ namespace BrowserGame_courseSimbirSoft_
             }
 
             host.Run();
-        }
 
+
+        }
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureLogging(logging => logging.SetMinimumLevel(LogLevel.Trace));
     }
 }

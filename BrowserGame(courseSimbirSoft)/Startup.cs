@@ -10,9 +10,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BrowserGame_courseSimbirSoft_.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using BrowserGame_courseSimbirSoft_.Models;
+using BrowserGame_courseSimbirSoft_.Views.Error;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using BrowserGame_courseSimbirSoft_.Services;
+using BrowserGame_courseSimbirSoft_.Services.Implementation;
+using DataLogicLayer.Data;
+using DataLogicLayer.Models;
+using BusinessLogicLayer.Data;
+
 
 namespace BrowserGame_courseSimbirSoft_
 {
@@ -25,49 +35,51 @@ namespace BrowserGame_courseSimbirSoft_
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
-            //Включение аутентификации Google, facebook с помощью OWIN
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             services.AddAuthentication()
-                .AddGoogle(googleOptions =>
-                {
-                    googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-                })
                 .AddFacebook(facebookOptions =>
                 {
                     facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
                     facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
                 });
-            //добавил фильтр для Включение SSL/TLS
+
+
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new RequireHttpsAttribute());
             });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseNpgsql(
-            //        Configuration.GetConnectionString("DefaultConnection")));
-            //
             services.AddMvc();
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connection, b => b.MigrationsAssembly("DataLogicLayer")));
 
-            services.AddDefaultIdentity<IdentityUser>()
-          .AddDefaultUI(UIFramework.Bootstrap4)
-          .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<ICharacterServices, CharacterServices>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddDataLibraryCollection(Configuration);
+            services.AddBusinessLibraryCollection();
+
+            services.AddDefaultIdentity<UserData>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -80,20 +92,21 @@ namespace BrowserGame_courseSimbirSoft_
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            //loggerFactory.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "log//logger_" + DateTime.Today.ToShortDateString() + ".txt"));
+            //var logger = loggerFactory.CreateLogger("FileLogger");
+            app.UseExceptionHandler("/Error");
+            app.UseStatusCodePagesWithRedirects("Home/Error/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
             app.UseAuthentication();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
         }
+
     }
 }

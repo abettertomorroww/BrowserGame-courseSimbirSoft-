@@ -5,197 +5,210 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BrowserGame_courseSimbirSoft_.Data;
 using BrowserGame_courseSimbirSoft_.Models;
+using BrowserGame_courseSimbirSoft_.ViewModels;
+using BrowserGame_courseSimbirSoft_.Services;
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
-    
+
+    /// <summary>
+    /// управление персонажами
+    /// </summary>
+    [Authorize]
     public class CharactersController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        
-        public CharactersController(ApplicationDbContext context)
+        private readonly ILogger _logger;
+        private readonly ICharacterServices _char;
+
+        public CharactersController(ILogger<CharactersController> logger, ICharacterServices chara)
         {
-            _context = context;
+            _logger = logger;
+            _char = chara;
         }
 
 
-
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        /// <summary>
+        /// получаем список персонажей
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name" : "";
-            ViewData["ClassSortParm"] = sortOrder == "Class" ? "date_desc" : "Class";
-            ViewData["CurrentFilter"] = searchString;
-
-            var characters = from s in _context.Characters
-                             select s;
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                characters = characters.Where(s => s.Name.Contains(searchString) || s.Race.Contains(searchString));
-
-            }
-            switch (sortOrder)
-            {
-                case "name":
-                    characters = characters.OrderByDescending(s => s.Name);
-                break;
-                case "Class":
-                    characters = characters.OrderBy(s => s.Class);
-                    break;
-                case "date_desc":
-                    characters = characters.OrderByDescending(s => s.Class);
-                    break;
-                default:
-                    characters = characters.OrderBy(s => s.Name);
-                    break;
-            }
-            return View(await characters.AsNoTracking().ToListAsync());
+            return View("Index", await this._char.GetCharacter(HttpContext.User.Identity.Name));
         }
 
-        public async Task<IActionResult> Information(int? id)
+        /// <summary>
+        /// ин-фо о персонаже
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var character = await _context.Characters
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (character == null)
+
+            var characters = await _char.GetDetails((int)id);
+
+            if (characters == null)
             {
                 return NotFound();
             }
-            return View(character);
+
+            if (characters.User != HttpContext.User.Identity.Name || characters.User == "Default")
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(characters);
         }
+
+        /// <summary>
+        /// страница для создания персонажа
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// создание персонажа
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Character character)
+
         {
-            if(ModelState.IsValid)
+            if (character.Name.Length < 2 || character.Name.Length > 20)
             {
-                try
-                {
-                    if (ModelState.IsValid)
-                    {
-                        _context.Add(character);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
-                }
-                catch (DbUpdateException /* ex */)
-                {
-                    //Log the error (uncomment ex variable name and write a log.
-                    ModelState.AddModelError("", "Невозможно сохранить изменения. " +
-                                       "Повторите попытку, и если проблема не устранена, " +
-                "обратитесь к системному администратору.");
-                }
-                
+                ModelState.AddModelError("Name", "The length of the string must be between 2 to 20 characters");
             }
-            
+
+            if (_char.EqualChar(character.Name, "add", null).Count() > 0)
+            {
+                ModelState.AddModelError("Name", "Error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var name = HttpContext.User.Identity.Name;
+
+                var charsId = await _char.CreateChar(character, name, "add");
+                return RedirectToAction(nameof(Index));
+            }
             return View(character);
         }
-        public async Task<IActionResult> Transform(int? id)
+
+        /// <summary>
+        /// страница редактирования персонажа
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var character = await _context.Characters.FindAsync(id);
+            var character = await _char.GetDetails((int)id);
+
             if (character == null)
             {
                 return NotFound();
             }
+
+            if (character.User != HttpContext.User.Identity.Name || character.User == "Default")
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View(character);
         }
 
+
+        /// <summary>
+        /// редактирование персонажа
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Transform")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> TransformPost(int? id)
+        public async Task<IActionResult> Edit(int id, Character character)
         {
-            
-                if (id == null)
+
+            if (id != character.Id)
             {
                 return NotFound();
             }
-            var studentToUpdate = await _context.Characters.SingleOrDefaultAsync(s => s.Id == id);
-            if (await TryUpdateModelAsync<Character>(
-                studentToUpdate,
-                "",
-                s => s.Name, s => s.Race, s => s.Ability, s => s.Class))
+
+            if (_char.EqualChar(character.Name, "update", character.Id).Count() > 0)
+            {
+                ModelState.AddModelError("Name", "A character with that name is employ!");
+            }
+
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    await _char.CreateChar(character, HttpContext.User.Identity.Name, "update");
                 }
-                catch (DbUpdateException /* ex */)
+                catch (DbUpdateConcurrencyException)
                 {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Невозможно сохранить изменения. " +
-                        "Повторите попытку, и если проблема не устранена, " +
- "обратитесь к системному администратору.");
+                    throw;
                 }
+                return RedirectToAction(nameof(Index));
             }
-            return View(studentToUpdate);
+            return View(character);
         }
 
-        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
+
+        /// <summary>
+        /// страница удаления персонажа
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Characters
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (student == null)
+            var character = await _char.GetDetails((int)id);
+
+            if (character == null)
             {
                 return NotFound();
             }
 
-            if (saveChangesError.GetValueOrDefault())
+            if (character.User != HttpContext.User.Identity.Name || character.User == "Default")
             {
-                ViewData["ErrorMessage"] =
-                    "Ошибка удаления. Попробуйте еще раз, и если проблема не устранена " +
- "обратитесь к системному администратору.";
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(student);
+            return View(character);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Characters
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (student == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            try
-            {
-                _context.Characters.Remove(student);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            catch (DbUpdateException /* ex */)
-            {
-                //Log the error (uncomment ex variable name and write a log.)
-                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
-            }
+            await _char.DeleteCharacterAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

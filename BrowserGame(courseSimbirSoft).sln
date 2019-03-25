@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrowserGame(courseSimbirSoft)", "BrowserGame(courseSimbirSoft)\BrowserGame(courseSimbirSoft).csproj", "{32C30BD8-1F21-4577-B78C-2A65D26F1CF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{F114A521-FC5F-41F5-82B7-37521439C98D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLogicLayer", "DataLogicLayer\DataLogicLayer.csproj", "{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{32C30BD8-1F21-4577-B78C-2A65D26F1CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32C30BD8-1F21-4577-B78C-2A65D26F1CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32C30BD8-1F21-4577-B78C-2A65D26F1CF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F114A521-FC5F-41F5-82B7-37521439C98D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F114A521-FC5F-41F5-82B7-37521439C98D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F114A521-FC5F-41F5-82B7-37521439C98D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F114A521-FC5F-41F5-82B7-37521439C98D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
