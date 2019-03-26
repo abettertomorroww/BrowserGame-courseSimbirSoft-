@@ -15,7 +15,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
 {
 
     /// <summary>
-    /// роли
+    /// контролер ролей
     /// </summary>
     [Authorize(Roles = "Admin")]
     public class RolesController : Controller
@@ -29,23 +29,23 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// список ролей
+        /// возвращаем список с ролями
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
         /// <summary>
-        /// страница для создания ролей
+        /// выводим страницу для создания ролей
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult Create() => View();
 
         /// <summary>
-        /// создание ролей
+        /// возвращаем метод создания ролей
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">имя персонажа</param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(string name)
@@ -71,7 +71,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         /// <summary>
         /// удаление ролей
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -82,20 +82,24 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             {
                 IdentityResult result = await _roleManager.DeleteAsync(role);
             }
+            if (role == null)
+            {
+                return NotFound();
+            }
             return RedirectToAction("Index");
         }
 
         /// <summary>
-        /// страница с списком пользователей
+        /// получаем страницу с списком пользователей
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult UserList() => View(_userManager.Users.ToList());
 
         /// <summary>
-        /// страница для изменения ролей
+        /// получаем страницу для изменения ролей
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">индификатор пользователя</param>
         /// <returns></returns>
         public async Task<IActionResult> Edit(string userId)
         {
@@ -128,6 +132,10 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         public async Task<IActionResult> Edit(string userId, List<string> roles)
         {
             IdentityUser user = await _userManager.FindByIdAsync(userId);
+            if (roles == null)
+            {
+                return NotFound();
+            }
             if (user != null)
             {
                 var userRoles = await _userManager.GetRolesAsync(user);

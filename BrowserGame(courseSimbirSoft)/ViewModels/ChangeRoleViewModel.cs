@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace BrowserGame_courseSimbirSoft_.ViewModels
 {
+    /// <summary>
+    /// модель изменения ролей
+    /// </summary>
     public class ChangeRoleViewModel
     {
 

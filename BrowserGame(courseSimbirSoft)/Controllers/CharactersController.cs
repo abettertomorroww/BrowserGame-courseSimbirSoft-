@@ -16,7 +16,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
 {
 
     /// <summary>
-    /// управление персонажами
+    /// контроллер управления персонажем
     /// </summary>
     [Authorize]
     public class CharactersController : Controller
@@ -24,15 +24,15 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         private readonly ILogger _logger;
         private readonly ICharacterServices _char;
 
-        public CharactersController(ILogger<CharactersController> logger, ICharacterServices chara)
+        public CharactersController(ILogger<CharactersController> logger, ICharacterServices charService)
         {
             _logger = logger;
-            _char = chara;
+            _char = charService;
         }
 
 
         /// <summary>
-        /// получаем список персонажей
+        /// возвращает список персонажей
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -42,9 +42,9 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// ин-фо о персонаже
+        /// возвращает информацию о персонаже
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         public async Task<IActionResult> Details(int? id)
         {
@@ -53,7 +53,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
                 return NotFound();
             }
 
-            var characters = await _char.GetDetails((int)id);
+            var characters = await _char.GetDetails(id.Value);
 
             if (characters == null)
             {
@@ -81,28 +81,18 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         /// <summary>
         /// создание персонажа
         /// </summary>
-        /// <param name="character"></param>
+        /// <param name="character">имя персонажа</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Character character)
 
         {
-            if (character.Name.Length < 2 || character.Name.Length > 20)
-            {
-                ModelState.AddModelError("Name", "The length of the string must be between 2 to 20 characters");
-            }
-
-            if (_char.EqualChar(character.Name, "add", null).Count() > 0)
-            {
-                ModelState.AddModelError("Name", "Error");
-            }
-
             if (ModelState.IsValid)
             {
                 var name = HttpContext.User.Identity.Name;
 
-                var charsId = await _char.CreateChar(character, name, "add");
+                var charsId = await _char.CreateChar(character, name, "create");
                 return RedirectToAction(nameof(Index));
             }
             return View(character);
@@ -111,7 +101,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         /// <summary>
         /// страница редактирования персонажа
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -138,14 +128,14 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
 
 
         /// <summary>
-        /// редактирование персонажа
+        /// возвращяем метод редактирование персонажа
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Transform")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Character character)
+        public IActionResult Edit(int id, Character character)
         {
 
             if (id != character.Id)
@@ -157,27 +147,14 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             {
                 ModelState.AddModelError("Name", "A character with that name is employ!");
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await _char.CreateChar(character, HttpContext.User.Identity.Name, "update");
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
             return View(character);
         }
 
 
         /// <summary>
-        /// страница удаления персонажа
+        /// получаем страницу удаления персонажа
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
@@ -202,6 +179,11 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             return View(character);
         }
 
+        /// <summary>
+        /// удаление персонажа 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

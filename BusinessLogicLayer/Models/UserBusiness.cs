@@ -8,7 +8,12 @@ using System.Text;
 
 namespace BusinessLogicLayer.Models
 {
-    public class UserBusiness : UserData
+
+    public class UserBusiness
     {
+        /// <summary>
+        /// User Name
+        /// </summary>
+        public string Name { get; set; }
     }
 }

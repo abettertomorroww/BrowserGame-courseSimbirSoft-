@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
-
+    /// <summary>
+    /// контроллер ошибок
+    /// </summary>
     public class ErrorsController : Controller
     {
         public new int StatusCode { get; }
@@ -17,6 +19,10 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             return View("Error");
         }
 
+        /// <summary>
+        /// обработка ошибок
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Error(int? id, int statusCode = 404)
         {
             switch (statusCode)

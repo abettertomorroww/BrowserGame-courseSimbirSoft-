@@ -11,7 +11,9 @@ using DataLogicLayer.Models;
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
-
+    /// <summary>
+    /// контроллер управления пользователем 
+    /// </summary>
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
@@ -23,21 +25,21 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// список пользователей
+        /// возвращяем список пользователей
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult Index() => View(_userManager.Users.ToList());
 
         /// <summary>
-        /// страница добавления пользователя
+        /// получаем страницу добавления пользователя
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         public IActionResult Create() => View();
 
         /// <summary>
-        /// создание пользователя
+        /// возвращяем создание пользователя
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -46,7 +48,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserData user = new UserData { Email = model.Email, UserName = model.Password };
+                var user = new UserData { Email = model.Email, UserName = model.Password };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -64,9 +66,9 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// страница редактирования персонажа
+        /// получаем страницу редактирования персонажа
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор пользователя</param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -81,7 +83,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// редактирование пользователя
+        /// возвращяем редактирование пользователя
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -111,14 +113,18 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// удаление пользователя
+        /// возвращяем удаление пользователя
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор пользователя</param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
             UserData user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
             if (user != null)
             {
                 IdentityResult result = await _userManager.DeleteAsync(user);
@@ -127,9 +133,9 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// страница смены пароля
+        /// получаем страницу смены пароля
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор пользователя</param>
         /// <returns></returns>
         public async Task<IActionResult> ChangePassword(string id)
         {

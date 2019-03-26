@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BrowserGame_courseSimbirSoft_.ViewModels
 {
+    /// <summary>
+    /// модель создания пользователя
+    /// </summary>
     public class CreateUserViewModel
     {
 

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BrowserGame_courseSimbirSoft_.Services.Implementation
 {
+    /// <summary>
+    /// интерфейс работы с пользователями
+    /// </summary>
     public interface IUserService
     {
 

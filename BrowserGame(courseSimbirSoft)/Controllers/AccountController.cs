@@ -14,7 +14,9 @@ using BrowserGame_courseSimbirSoft_.Services.Implementation;
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
-
+    /// <summary>
+    /// контроллер регистрации пользователя
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {
@@ -29,7 +31,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         }
 
         /// <summary>
-        /// страница регистрации
+        /// получаем страницу регистрации
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -38,6 +40,10 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             return View();
         }
 
+        /// <summary>
+        /// регистрация пользователя 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {

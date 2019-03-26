@@ -7,6 +7,9 @@ using BrowserGame_courseSimbirSoft_.ViewModels;
 
 namespace BrowserGame_courseSimbirSoft_.Services
 {
+    /// <summary>
+    /// интерфейс работы с персонажеми
+    /// </summary>
     public interface ICharacterServices
     {
 

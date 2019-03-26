@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BrowserGame_courseSimbirSoft_.ViewModels
 {
+    /// <summary>
+    /// модель изменения пароля
+    /// </summary>
     public class ChangePasswordViewModel
     {
 

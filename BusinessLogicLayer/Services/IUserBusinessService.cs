@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Services
 {
+    /// <summary>
+    /// интерфейс работы с пользователем
+    /// </summary>
     public interface IUserBusinessService
     {
         /// <summary>

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace BrowserGame_courseSimbirSoft_.Models
 {
     /// <summary>
-    /// персонаж
+    /// модель персонажа
     /// </summary>
     public class Character
     {

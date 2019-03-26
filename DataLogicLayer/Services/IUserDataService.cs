@@ -6,6 +6,9 @@ using DataLogicLayer.Models;
 
 namespace DataLogicLayer.Services
 {
+    /// <summary>
+    /// интерфейс работы с пользователем (БД)
+    /// </summary>
     public interface IUserDataService
     {
         /// <summary>

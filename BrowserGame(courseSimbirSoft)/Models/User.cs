@@ -4,6 +4,9 @@ using System.ComponentModel;
 
 namespace BrowserGame_courseSimbirSoft_.Models
 {
+    /// <summary>
+    /// модель пользователя
+    /// </summary>
     public class User : UserData
     {
 

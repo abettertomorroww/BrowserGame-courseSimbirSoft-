@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Services
 {
+    /// <summary>
+    /// интерфейс работы с персонажем
+    /// </summary>
     public interface ICharacterBusinessService
     {
         /// <summary>

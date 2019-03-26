@@ -11,13 +11,16 @@ using DataLogicLayer.Data;
 
 namespace BrowserGame_courseSimbirSoft_.Controllers
 {
+    /// <summary>
+    /// основной контроллер
+    /// </summary>
     public class HomeController : Controller
     {
 
 
         [HttpGet]
         /// <summary>
-        /// начальная страница
+        /// получаем начальную страница
         /// </summary>
         /// <returns></returns>
         public IActionResult Index()
@@ -28,47 +31,12 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
 
         [HttpGet]
         /// <summary>
-        /// страница кондифциальности
+        /// получаем страницу кондифциальности
         /// </summary>
         /// <returns></returns>
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        /// <summary>
-        /// страница логов
-        /// </summary>
-        /// <returns></returns>
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public IActionResult Logs()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// обработка ошибок
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        [HttpGet]
-        public IActionResult Error(int? id)
-        {
-            switch (id)
-            {
-                case 404:
-                    return View("Error404");
-                case 500:
-                    return View("Error500");
-                case 401:
-                    return View("Error401");
-                case 403:
-                    return View("Error403");
-                default:
-                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-            }
         }
     }
 }
