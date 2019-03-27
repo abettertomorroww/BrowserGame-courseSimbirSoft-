@@ -37,17 +37,18 @@ namespace BrowserGame_courseSimbirSoft_.Services.Implementation
             return (await characterData.GetDetalies(id)).Adapt<Character>();
         }
 
-        public async Task<int> CreateChar(Character character, string name, string operation)
+        public async Task<int> CreateChar(Character character)
         {
-            var baseCharacter = character.Adapt<CharacterBusiness>();
-            baseCharacter.User = name;
-            await characterData.CreateChar(baseCharacter, name, operation);
-            return baseCharacter.Id;
+            var characterList = character.Adapt<CharacterBusiness>();
+            await this.characterData.CreateChar(characterList);
+            return characterList.Id;
         }
 
-        public IEnumerable<Character> EqualChar(string name, string operation, int? id)
+        public async Task<int> UpdateChar(Character character)
         {
-            return (characterData.EqualChar(name, operation, id)).Adapt<IEnumerable<Character>>();
+            var characterList = character.Adapt<CharacterBusiness>();
+            await this.characterData.UpdateChar(characterList);
+            return characterList.Id;
         }
 
 

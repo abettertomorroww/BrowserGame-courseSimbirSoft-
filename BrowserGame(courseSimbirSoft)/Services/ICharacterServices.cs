@@ -24,20 +24,16 @@ namespace BrowserGame_courseSimbirSoft_.Services
         /// <summary>
         /// создание персонажа
         /// </summary>
-        /// <param name="character"></param>
-        /// <param name="name"></param>
-        /// <param name="operation"></param>
+        /// <param name="character">персонаж</param>
         /// <returns></returns>
-        Task<int> CreateChar(Character character, string name, string operation);
+        Task<int> CreateChar(Character character);
 
         /// <summary>
-        /// список персонажей с идентчным параметру именем
+        /// обновление персонажа
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="operation"></param>
-        /// <param name="id"></param>
+        /// <param name="character">персонаж</param>
         /// <returns></returns>
-        IEnumerable<Character> EqualChar(string name, string operation, int? id);
+        Task<int> UpdateChar(Character character);
 
         /// <summary>
         /// удаления персонажа 

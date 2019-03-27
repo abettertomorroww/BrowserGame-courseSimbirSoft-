@@ -15,33 +15,37 @@ namespace BusinessLogicLayer.Services
         /// <summary>
         /// список персонажей
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">имя персонажа</param>
         /// <returns></returns>
         Task<IList<CharacterBusiness>> GetCharacters(string name);
 
         /// <summary>
         /// удаление персонажа
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         Task DeleteCharacterAsync(int id);
 
         /// <summary>
         /// редактирование персонажа
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         Task<CharacterBusiness> GetDetalies(int id);
 
-        /// <summary>
-        /// создание персонажа
-        /// </summary>
-        /// <param name="character"></param>
-        /// <param name="name"></param>
-        /// <param name="operation"></param>
-        /// <returns></returns>
-        Task CreateChar(CharacterBusiness character, string name, string operation);
 
-        IList<CharacterBusiness> EqualChar(string name, string operation, int? id);
+        /// <summary>
+        /// имя персонажа
+        /// </summary>
+        /// <param name="character">персонаж</param>
+        /// <returns></returns>
+        Task CreateChar(CharacterBusiness character);
+
+        /// <summary>
+        /// обновляем персонажа
+        /// </summary>
+        /// <param name="character">персонаж</param>
+        /// <returns></returns>
+        Task UpdateChar(CharacterBusiness character);
     }
 }

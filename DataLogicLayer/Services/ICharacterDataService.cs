@@ -35,17 +35,15 @@ namespace DataLogicLayer.Services
         /// создание персонажа(БД)
         /// </summary>
         /// <param name="characters">персонаж</param>
-        /// <param name="name">имя персонажа</param>
         /// <returns></returns>
-        Task CreataChar(CharacterData characters, string name);
+        Task CreateChar(CharacterData characters);
 
         /// <summary>
         /// редактирование персонажа (БД)
         /// </summary>
         /// <param name="characters">персонаж</param>
-        /// <param name="name">имя персонажа</param>
         /// <returns></returns>
-        Task UpdateChar(CharacterData characters, string name);
+        Task UpdateChar(CharacterData characters);
 
         /// <summary>
         /// получаем список имен юзеров с индетичным id (БД)

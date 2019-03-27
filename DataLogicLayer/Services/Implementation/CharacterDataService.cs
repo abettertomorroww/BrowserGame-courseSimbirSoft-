@@ -37,16 +37,16 @@ namespace DataLogicLayer.Services.Implementation
             return await characters;
         }
 
-        public async Task CreataChar(CharacterData character, string name)
+        public async Task CreateChar(CharacterData character)
         {
-            db.Characters.Add(character);
-            await db.SaveChangesAsync();
+            this.db.Characters.Add(character);
+            await this.db.SaveChangesAsync();
         }
 
-        public async Task UpdateChar(CharacterData characters, string name)
+        public async Task UpdateChar(CharacterData character)
         {
-            db.Characters.Update(characters);
-            await db.SaveChangesAsync();
+            this.db.Characters.Update(character);
+            await this.db.SaveChangesAsync();
         }
 
         public IList<CharacterData> EqualChar(string name)

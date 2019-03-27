@@ -81,7 +81,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         /// <summary>
         /// создание персонажа
         /// </summary>
-        /// <param name="character">имя персонажа</param>
+        /// <param name="character">персонаж</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -90,16 +90,14 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         {
             if (ModelState.IsValid)
             {
-                var name = HttpContext.User.Identity.Name;
-
-                var charsId = await _char.CreateChar(character, name, "create");
+                await _char.CreateChar(character);
                 return RedirectToAction(nameof(Index));
             }
             return View(character);
         }
 
         /// <summary>
-        /// страница редактирования персонажа
+        /// страница редактирования персонажаконсоль
         /// </summary>
         /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
@@ -126,29 +124,6 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
             return View(character);
         }
 
-
-        /// <summary>
-        /// возвращяем метод редактирование персонажа
-        /// </summary>
-        /// <param name="id">индификатор персонажа</param>
-        /// <returns></returns>
-        [Authorize(Roles = "Admin")]
-        [HttpPost, ActionName("Transform")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Character character)
-        {
-
-            if (id != character.Id)
-            {
-                return NotFound();
-            }
-
-            if (_char.EqualChar(character.Name, "update", character.Id).Count() > 0)
-            {
-                ModelState.AddModelError("Name", "A character with that name is employ!");
-            }
-            return View(character);
-        }
 
 
         /// <summary>

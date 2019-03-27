@@ -18,21 +18,21 @@ namespace BrowserGame_courseSimbirSoft_.Services.Implementation
         /// <summary>
         /// регистрация пользователя
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="pass"></param>
+        /// <param name="user">пользователь</param>
+        /// <param name="pass">пароль</param>
         Task<IdentityResult> Register(User user, string pass);
 
         /// <summary>
         /// вход на сайт при регистрации
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">пользователь</param>
         Task SignIn(User user);
 
         /// <summary>
         /// вход на сайт по паролю
         /// </summary>
-        /// <param name="email">mail</param>
-        /// <param name="pass"></param>
+        /// <param name="email">e-mail</param>
+        /// <param name="pass">пароль</param>
         /// <param name="rememberMe">Флаг запоминания на сайте</param>
         Task<Microsoft.AspNetCore.Identity.SignInResult> PasswordSignIn(string email, string pass, bool rememberMe);
 
