@@ -14,7 +14,6 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
     /// <summary>
     /// контроллер управления пользователем 
     /// </summary>
-    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         UserManager<UserData> _userManager;

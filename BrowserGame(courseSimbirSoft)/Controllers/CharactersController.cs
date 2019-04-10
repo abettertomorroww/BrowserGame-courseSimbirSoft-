@@ -21,13 +21,11 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
     [Authorize]
     public class CharactersController : Controller
     {
-        private readonly ILogger _logger;
-        private readonly ICharacterServices _char;
+        private readonly ICharacterServices _character;
 
-        public CharactersController(ILogger<CharactersController> logger, ICharacterServices charService)
+        public CharactersController(ICharacterServices characters)
         {
-            _logger = logger;
-            _char = charService;
+            _character = characters;
         }
 
 
@@ -38,7 +36,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View("Index", await this._char.GetCharacter(HttpContext.User.Identity.Name));
+            return View("Index", await this._character.GetCharacter(HttpContext.User.Identity.Name));
         }
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
                 return NotFound();
             }
 
-            var characters = await _char.GetDetails(id.Value);
+            var characters = await _character.GetDetails(id.Value);
 
             if (characters == null)
             {
@@ -90,7 +88,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _char.CreateChar(character);
+                await _character.CreateChar(character);
                 return RedirectToAction(nameof(Index));
             }
             return View(character);
@@ -110,7 +108,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
                 return NotFound();
             }
 
-            var character = await _char.GetDetails((int)id);
+            var character = await _character.GetDetails((int)id);
 
             if (character == null)
             {
@@ -119,6 +117,33 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
 
             if (character.User != HttpContext.User.Identity.Name || character.User == "Default")
             {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(character);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Character character)
+        {
+            if (id != character.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _character.UpdateChar(character);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(character);
@@ -139,7 +164,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
                 return NotFound();
             }
 
-            var character = await _char.GetDetails((int)id);
+            var character = await _character.GetDetails((int)id);
 
             if (character == null)
             {
@@ -157,14 +182,14 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         /// <summary>
         /// удаление персонажа 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">индификатор персонажа</param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _char.DeleteCharacterAsync(id);
+            await _character.DeleteCharacterAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

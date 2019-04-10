@@ -5,9 +5,13 @@ VisualStudioVersion = 15.0.28307.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrowserGame(courseSimbirSoft)", "BrowserGame(courseSimbirSoft)\BrowserGame(courseSimbirSoft).csproj", "{32C30BD8-1F21-4577-B78C-2A65D26F1CF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{F114A521-FC5F-41F5-82B7-37521439C98D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{F114A521-FC5F-41F5-82B7-37521439C98D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLogicLayer", "DataLogicLayer\DataLogicLayer.csproj", "{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLogicLayer", "DataLogicLayer\DataLogicLayer.csproj", "{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Tests", "BusinessLogicLayer.Tests\BusinessLogicLayer.Tests.csproj", "{5B87368B-6376-451D-A42E-81CA9E894303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserGames.Tests", "BrowserGames.Tests\BrowserGames.Tests.csproj", "{3FBD896D-B8AC-44C5-9150-7879D82D7900}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E413657-13AE-4C2E-B97F-16EDD56CE8C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B87368B-6376-451D-A42E-81CA9E894303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B87368B-6376-451D-A42E-81CA9E894303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B87368B-6376-451D-A42E-81CA9E894303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B87368B-6376-451D-A42E-81CA9E894303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FBD896D-B8AC-44C5-9150-7879D82D7900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FBD896D-B8AC-44C5-9150-7879D82D7900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FBD896D-B8AC-44C5-9150-7879D82D7900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FBD896D-B8AC-44C5-9150-7879D82D7900}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

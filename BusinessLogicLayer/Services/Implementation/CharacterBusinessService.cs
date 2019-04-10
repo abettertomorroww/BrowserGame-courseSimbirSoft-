@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace DataLogicLayer.Services.Implementation
 {
-    internal class CharacterBusinessService : ICharacterBusinessService
+    public class CharacterBusinessService : ICharacterBusinessService
     {
         private readonly ICharacterDataService characterService;
 

@@ -17,7 +17,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
     /// <summary>
     /// контролер ролей
     /// </summary>
-    [Authorize(Roles = "Admin")]
+    
     public class RolesController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
@@ -40,7 +40,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Create() => View();
+        public IActionResult Create(IdentityRole role) => View();
 
         /// <summary>
         /// возвращаем метод создания ролей
