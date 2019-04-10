@@ -26,7 +26,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         public IActionResult Index()
         {
 
-            return View();
+            return View("Index");
         }
 
         [HttpGet]
@@ -36,7 +36,7 @@ namespace BrowserGame_courseSimbirSoft_.Controllers
         /// <returns></returns>
         public IActionResult Privacy()
         {
-            return View();
+            return View("Privacy");
         }
     }
 }
